@@ -8,6 +8,8 @@ on:
 
 jobs:
   tests:
+    runs-on: ubuntu-latest
+
     steps:
       - run: uname -a
       - run: ldconfig -p
