@@ -1,0 +1,23 @@
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  tests:
+    steps:
+      - run: uname -a
+      - run: ldconfig -p
+      - run: lsb_release -a
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Fetch Go
+        uses: actions/setup-go@v5
+
+      - name: Test
+        run: go test -v ./... -race
