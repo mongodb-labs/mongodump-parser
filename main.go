@@ -37,7 +37,7 @@ func main() {
 	var cmd = cli.Command{
 		Name:        "mongodump-parser",
 		Usage:       "parse mongodump archive files",
-		Description: wordwrap.WrapString("This tool reads a mongodump archive file from standard input, parses its header, then outputs the parse to standard output. This lets you see an archive’s contents without actually restoring it.", uint(colWidth-4)),
+		Description: wordwrap.WrapString("This tool reads a mongodump archive file from standard input, parses its header, then outputs the parse to standard output in MongoDB Extended JSON. This lets you see an archive’s contents without actually restoring it.", uint(colWidth-4)),
 		Action: func(_ context.Context, cmd *cli.Command) error {
 			return run(cmd)
 		},
