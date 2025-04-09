@@ -71,7 +71,7 @@ func run(cmd *cli.Command) error {
 func getReport(input io.Reader, errOut io.Writer) (Report, error) {
 	err := checkMagicBytes(input)
 	if err != nil {
-		return Report{}, err
+		return Report{}, errors.Wrap(err, "this does not appear to be a mongodump archive")
 	}
 
 	header := bson.D{}
@@ -152,7 +152,7 @@ func checkMagicBytes(input io.Reader) error {
 
 	magicNum := binary.LittleEndian.Uint32(magicBytes[:])
 	if magicNum != archive.MagicNumber {
-		return fmt.Errorf("expected magic number header (%v, %d); should be %d", magicBytes, magicNum, archive.MagicNumber)
+		return fmt.Errorf("unexpected magic number header (%v, %d); should be %d", magicBytes, magicNum, archive.MagicNumber)
 	}
 
 	return nil
