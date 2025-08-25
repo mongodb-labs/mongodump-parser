@@ -29,7 +29,11 @@ type Report struct {
 }
 
 func main() {
-	colWidth, _, err := term.GetSize(int(os.Stdin.Fd()))
+	if term.IsTerminal(int(os.Stdin.Fd())) {
+		fmt.Fprintf(os.Stderr, "NOTE: Standard input is a terminal, which is unusual. Did you maybe mean to `cat` an archive file into this tool?\n")
+	}
+
+	colWidth, _, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
 		colWidth = defaultColumnWidth
 	}
@@ -39,6 +43,10 @@ func main() {
 		Usage:       "parse mongodump archive files",
 		Description: wordwrap.WrapString("This tool reads a mongodump archive file from standard input, parses its header, then outputs the parse to standard output in MongoDB Extended JSON. This lets you see an archive’s contents without actually restoring it.", uint(colWidth-4)),
 		Action: func(_ context.Context, cmd *cli.Command) error {
+			if cmd.Args().Len() > 0 {
+				return fmt.Errorf("unrecognized: %v", cmd.Args().Slice())
+			}
+
 			return run(cmd)
 		},
 	}

@@ -10,3 +10,6 @@ then writes the result as a
 document to standard output.
 
 To build it, just run `go build`.
+
+To test it with the included test archive, run `cat test.dump | ./mongodump-parser`.
+(Append `| jq` to that command to improve the output’s legibility.)
